@@ -1,0 +1,8 @@
+name = "omni-key-gate"
+main = "worker.js"
+compatibility_date = "2026-11-01"
+workers_dev = true
+
+# KV хранит, кому уже выдана ссылка. Без id: Wrangler создаст сам при деплое.
+[[kv_namespaces]]
+binding = "GATE_KV"

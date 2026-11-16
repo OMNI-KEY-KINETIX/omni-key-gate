@@ -1,0 +1,10 @@
+{
+  "name": "omni-key-gate",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "worker.js",
+  "dependencies": {
+    "ethers": "6.13.4"
+  }
+}
