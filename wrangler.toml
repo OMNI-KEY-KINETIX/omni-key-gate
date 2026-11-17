@@ -2,7 +2,9 @@ name = "omni-key-gate"
 main = "worker.js"
 compatibility_date = "2026-11-01"
 workers_dev = true
+preview_urls = false
 
-# KV хранит, кому уже выдана ссылка. Без id: Wrangler создаст сам при деплое.
+# KV хранит, кому уже выдана ссылка (создано Cloudflare автоматически при первом деплое).
 [[kv_namespaces]]
 binding = "GATE_KV"
+id = "b26f3e58a40a4b99b1e5f9b0a67b6644"

@@ -115,25 +115,11 @@ async function handleClaim(req, env) {
   return J(req, 200, { link, expires: exp, level, issued: n + 1, max: MAX_ISSUES });
 }
 
-// Помощник при настройке: показывает id каналов, где бот получил сообщение. Секретов не раскрывает.
-async function handleChatIds(req, env) {
-  if (!env.BOT_TOKEN) return J(req, 503, { error: "not_configured" });
-  const r = await fetch(`https://api.telegram.org/bot${env.BOT_TOKEN}/getUpdates?allowed_updates=${encodeURIComponent('["channel_post","my_chat_member"]')}`);
-  const j = await r.json();
-  const seen = {};
-  for (const u of (j.result || [])) {
-    const c = (u.channel_post && u.channel_post.chat) || (u.my_chat_member && u.my_chat_member.chat);
-    if (c) seen[c.id] = { id: c.id, title: c.title, type: c.type };
-  }
-  return J(req, 200, { ok: j.ok === true, chats: Object.values(seen) });
-}
-
 export default {
   async fetch(req, env) {
     const url = new URL(req.url);
     if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors(req) });
     if (url.pathname === "/health") return J(req, 200, { ok: true, configured: !!(env.BOT_TOKEN && env.CHAT_ID && env.GATE_KV) });
-    if (url.pathname === "/chat-ids" && req.method === "GET") return handleChatIds(req, env);
     if (url.pathname === "/claim" && req.method === "POST") return handleClaim(req, env);
     return J(req, 404, { error: "not_found" });
   },
