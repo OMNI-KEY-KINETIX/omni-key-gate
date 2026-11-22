@@ -1,7 +1,7 @@
 name = "omni-key-gate"
 main = "worker.js"
 compatibility_date = "2026-11-01"
-workers_dev = true
+workers_dev = false
 preview_urls = false
 
 # Свой адрес шлюза: Cloudflare сам создаст DNS-запись и сертификат (домен в этом же аккаунте).
