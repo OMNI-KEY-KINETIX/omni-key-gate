@@ -1,3 +1,4 @@
+import { runScheduled } from "./autopost.js";
 // OMNI-KEY Gate — выдаёт ОДНОРАЗОВУЮ ссылку в закрытый канал Alpha владельцу пасса GatePass.
 // Как проверяется: 1) кошелёк подписывает сообщение (бесплатно, это НЕ транзакция),
 // 2) Worker восстанавливает адрес из подписи, 3) читает GatePass.accessLevel(адрес) из блокчейна,
@@ -126,5 +127,9 @@ export default {
     if (url.pathname === "/health") return J(req, 200, { ok: true, configured: !!(env.BOT_TOKEN && env.CHAT_ID && env.GATE_KV) });
     if (url.pathname === "/claim" && req.method === "POST") return handleClaim(req, env);
     return J(req, 404, { error: "not_found" });
+  },
+  // Автопилот публичного канала (Cron раз в час). Любая ошибка здесь не влияет на выдачу ссылок.
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(runScheduled(env, tg).catch(() => {}));
   },
 };

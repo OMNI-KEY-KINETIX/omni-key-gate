@@ -9,6 +9,10 @@ routes = [
   { pattern = "gate.omnikeykiix.com", custom_domain = true }
 ]
 
+# Автопилот канала: проверка раз в час (бесплатно). Посты уходят в 07:00 и 11:00 UTC.
+[triggers]
+crons = ["0 * * * *"]
+
 # KV хранит, кому уже выдана ссылка (создано Cloudflare автоматически при первом деплое).
 [[kv_namespaces]]
 binding = "GATE_KV"
