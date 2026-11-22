@@ -4,6 +4,11 @@ compatibility_date = "2026-11-01"
 workers_dev = true
 preview_urls = false
 
+# Свой адрес шлюза: Cloudflare сам создаст DNS-запись и сертификат (домен в этом же аккаунте).
+routes = [
+  { pattern = "gate.omnikeykiix.com", custom_domain = true }
+]
+
 # KV хранит, кому уже выдана ссылка (создано Cloudflare автоматически при первом деплое).
 [[kv_namespaces]]
 binding = "GATE_KV"
