@@ -7,7 +7,11 @@ import { verifyMessage } from "ethers";
 
 const GATEPASS = "0x289E3BD13a0d5919eAb7D063930027287937B7aD";
 const SEL_ACCESS_LEVEL = "0x2f259a00"; // accessLevel(address)
-const ORIGIN = "https://omni-key-kinetix.github.io";
+const ORIGINS = [
+  "https://omni-key-kinetix.github.io",
+  "https://omnikeykiix.com",
+  "https://www.omnikeykiix.com",
+];
 const RPCS = [
   "https://bsc-rpc.publicnode.com",
   "https://bsc-dataseed.binance.org",
@@ -28,8 +32,8 @@ function cors(req) {
     "Cache-Control": "no-store",
     "X-Content-Type-Options": "nosniff",
   };
-  if (o === ORIGIN) {
-    h["Access-Control-Allow-Origin"] = ORIGIN;
+  if (ORIGINS.includes(o)) {
+    h["Access-Control-Allow-Origin"] = o;
     h["Access-Control-Allow-Methods"] = "POST, GET, OPTIONS";
     h["Access-Control-Allow-Headers"] = "Content-Type";
   }
@@ -75,7 +79,7 @@ export function claimMessage(addr, time) {
 
 async function handleClaim(req, env) {
   if (!env.BOT_TOKEN || !env.CHAT_ID || !env.GATE_KV) return J(req, 503, { error: "not_configured" });
-  if (req.headers.get("Origin") !== ORIGIN) return J(req, 403, { error: "origin" });
+  if (!ORIGINS.includes(req.headers.get("Origin"))) return J(req, 403, { error: "origin" });
   let body;
   try {
     const txt = await req.text();
